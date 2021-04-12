@@ -1,0 +1,5 @@
+# don't touch line endings by default
+* -text
+
+# Files that need to keep their LF ending even on Windows, because we may 'vagrant up' Linux boxes on windows hosts.
+*.sh text eol=lf
