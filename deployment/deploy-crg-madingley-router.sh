@@ -68,7 +68,7 @@ systemctl enable crgpsu.service
 
 # Build and deploy the .NET app
 echo Building .NET app...
-source ../pi-software/deploy-pi-software.sh
+../pi-software/deploy-pi-software.sh
 
 echo CRG Madingley Router deployment complete. Restart now.
 popd
