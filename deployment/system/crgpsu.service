@@ -4,6 +4,7 @@ Description=CRG PSU Manager
 [Service]
 Type=simple
 ExecStart=/usr/share/dotnet/dotnet $PSUMANAGER_PATH
+Requires=mosquitto
 User=crgpsu
 Group=crgpsu
 
