@@ -3,6 +3,10 @@ set -e
 pushd `dirname $0`
 echo Deploying CRG Madingley Router. Running in `pwd`.
 
+# Set hostname
+echo Setting hostname
+echo route-madingley.cambridgerepeaters.net > /etc/hostname
+
 # Install common packages
 echo Installing apt packages...
 apt update
