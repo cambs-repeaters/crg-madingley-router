@@ -59,6 +59,10 @@ source /etc/profile.d/10-dotnet.sh
 echo Configuring service user...
 grep crgpsu /etc/passwd || useradd -U -m crgpsu -G gpio,i2c
 
+# Enabling I2C
+echo Enabling i2c...
+grep "^dtparam=i2c_arm=on" /boot/config.txt || echo "dtparam=i2c_arm=on" >> /boot/config.txt
+
 # systemd service for the .NET app
 echo Installing systemd service...
 PSUMANAGER_PATH=$(realpath ../)/pi-software/Crg.PsuManager/bin/Debug/net5.0/Crg.PsuManager.dll
