@@ -6,7 +6,7 @@ echo Deploying CRG Madingley Router. Running in `pwd`.
 # Install common packages
 echo Installing apt packages...
 apt update
-apt install -y vim molly-guard iftop iptables-persistent mosquitto mosquitto-clients wget i2ctools openvpn
+apt install -y vim molly-guard iftop iptables-persistent mosquitto mosquitto-clients wget i2c-tools openvpn
 
 # Set up some local users using their GitHub public keys
 echo Creating CRG users...
