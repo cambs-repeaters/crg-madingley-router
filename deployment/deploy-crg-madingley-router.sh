@@ -26,7 +26,9 @@ cp sudoers.d/10-crg-nopasswd /etc/sudoers.d/10-crg-nopasswd
 # Disable password auth for SSH connections
 echo Configuring SSH...
 grep "PasswordAuthentication no" /etc/ssh/sshd_config || echo "PasswordAuthentication no" >> /etc/ssh/sshd_config
-systemctl enable sshd
+# This seems to be how raspi-config does it: 
+# https://github.com/RPi-Distro/raspi-config/blob/a94552d911324da9b55099db1abb0effe855852b/raspi-config#L794
+update-rc.d ssh enable 
 
 # Set up static IPs and DNS
 echo Configuring networking...
