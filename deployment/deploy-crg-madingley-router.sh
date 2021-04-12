@@ -57,7 +57,7 @@ source /etc/profile.d/10-dotnet.sh
 
 # User for the .NET app
 echo Configuring service user...
-grep crgpsu /etc/passwd || useradd -U -m crgpsu
+grep crgpsu /etc/passwd || useradd -U -m crgpsu -G gpio,i2c
 
 # systemd service for the .NET app
 echo Installing systemd service...
