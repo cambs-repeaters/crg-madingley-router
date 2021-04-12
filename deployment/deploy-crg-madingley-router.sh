@@ -62,6 +62,7 @@ grep crgpsu /etc/passwd || useradd -U -m crgpsu -G gpio,i2c
 # Enabling I2C
 echo Enabling i2c...
 grep "^dtparam=i2c_arm=on" /boot/config.txt || echo "dtparam=i2c_arm=on" >> /boot/config.txt
+grep i2c-dev /etc/modules || echo i2c-dev >> /etc/modules
 
 # systemd service for the .NET app
 echo Installing systemd service...
