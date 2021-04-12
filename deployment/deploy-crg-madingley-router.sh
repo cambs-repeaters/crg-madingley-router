@@ -62,7 +62,7 @@ grep crgpsu /etc/passwd || useradd -U -m crgpsu
 # systemd service for the .NET app
 echo Installing systemd service...
 PSUMANAGER_PATH=$(realpath ../)/pi-software/Crg.PsuManager/bin/Debug/net5.0/Crg.PsuManager.dll
-cat system/crgpsu.service | envsubst > /etc/systemd/system/crgpsu.service
+cat system/crgpsu.service | PSUMANAGER_PATH=$PSUMANAGER_PATH envsubst > /etc/systemd/system/crgpsu.service
 systemctl daemon-reload
 systemctl enable crgpsu.service
 
