@@ -43,6 +43,7 @@ namespace Crg.PsuManager
         {
             dynamic t = new
             {
+                utcTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
                 powerGood = PowerManager.PowerGood,
                 batteryVoltage = AdcManager.BatteryVoltage,
                 supplyVoltage = AdcManager.MainSupplyVoltage,
