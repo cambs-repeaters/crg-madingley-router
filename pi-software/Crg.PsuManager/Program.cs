@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Device.Gpio;
 using System.Device.I2c;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Crg.PsuManager
 {
@@ -26,7 +28,13 @@ namespace Crg.PsuManager
             Console.WriteLine("Pi voltage: {0:0.00}", adc.PiVoltage);
             Console.WriteLine("Battery voltage: {0:0.00}", adc.BatteryVoltage);
 
-            new TelemetryManager { PowerManager = powerManager, AdcManager = adc, TemperatureManager = temp }.PublishTelemetry();
+            TelemetryManager telemetry = new TelemetryManager { PowerManager = powerManager, AdcManager = adc, TemperatureManager = temp };
+
+            Timer telemtryTimer = new Timer(_ =>
+            {
+                telemetry.PublishTelemetry();
+                powerManager.EnsurePower();
+            }, null, 0, 10 * 1000);
         }
     }
 }
