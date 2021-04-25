@@ -32,8 +32,16 @@ namespace Crg.PsuManager
 
             Timer telemtryTimer = new Timer(_ =>
             {
-                telemetry.PublishTelemetry();
-                powerManager.EnsurePower();
+                try
+                {
+                    telemetry.PublishTelemetry();
+                    powerManager.EnsurePower();
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine("Exception in timer: {0}", ex.ToString());
+                    throw; // This will cause the service to bail out, but Systemd will restart it cleanly...
+                }
             }, null, 0, 10 * 1000);
         }
     }
