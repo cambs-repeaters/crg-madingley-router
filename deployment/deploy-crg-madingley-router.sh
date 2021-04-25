@@ -40,6 +40,7 @@ systemctl disable dhcpcd # (DHCP *client* daemon)
 cp interfaces.d/10-crg-router /etc/network/interfaces.d/10-crg-router
 cp etc/resolv.conf /etc/resolv.conf
 cp etc/hosts /etc/hosts
+cp sysctl.d/10-crg-router.conf /etc/sysctl.d/10-crg-router.conf
 
 # Configure iptables rules
 echo Configuring iptables...
