@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Hosting.Systemd;
+using System;
 using System.Device.Gpio;
 using System.Device.I2c;
 using System.Threading;
@@ -6,9 +9,25 @@ using System.Threading.Tasks;
 
 namespace Crg.PsuManager
 {
-    class Program
+    class Program : BackgroundService
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
+        {
+            if (SystemdHelpers.IsSystemdService())
+                CreateHostBuilder(args).Build().Run();
+            else
+                new Program().ExecuteAsync(new CancellationToken()).Wait();
+        }
+
+        private static IHostBuilder CreateHostBuilder(string[] args) => 
+            Host.CreateDefaultBuilder(args)
+            .UseSystemd()
+            .ConfigureServices((hostContext, services) => 
+            {
+                services.AddHostedService<Program>();
+            });
+
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             GpioController gpio = new GpioController();
             I2cBus i2c = I2cBus.Create(1);
@@ -30,7 +49,7 @@ namespace Crg.PsuManager
 
             TelemetryManager telemetry = new TelemetryManager { PowerManager = powerManager, AdcManager = adc, TemperatureManager = temp };
 
-            Timer telemtryTimer = new Timer(_ =>
+            while (!stoppingToken.IsCancellationRequested)
             {
                 try
                 {
@@ -42,9 +61,9 @@ namespace Crg.PsuManager
                     Console.Error.WriteLine("Exception in timer: {0}", ex.ToString());
                     throw; // This will cause the service to bail out, but Systemd will restart it cleanly...
                 }
-            }, null, 0, 10 * 1000);
 
-            Console.ReadLine();
+                await Task.Delay(10 * 1000, stoppingToken);
+            }
         }
     }
 }
