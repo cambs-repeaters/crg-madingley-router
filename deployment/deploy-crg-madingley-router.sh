@@ -51,6 +51,13 @@ cp dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf
 cp default/isc-dhcp-server /etc/default/isc-dhcp-server
 apt install -y isc-dhcp-server
 
+# Configure OpenVPN
+echo Configuring OpenVPN
+cp openvpn/crg-ca.cer /etc/openvpn/crg-ca.cer
+cp openvpn/madingley-washingley.conf /etc/openvpn/madingley-washingley.conf
+cp default/openvpn /etc/default/openvpn
+systemctl enable openvpn
+
 # Download and install .NET 5 SDK
 echo Installing .NET 5.0 SDK...
 mkdir -p /usr/share/dotnet
