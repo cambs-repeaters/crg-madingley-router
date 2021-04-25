@@ -4,6 +4,6 @@ iface eth0 inet static
 
 auto eth0.100
 iface eth0.100 inet static
-        address 172.27.0.2/24
-        gateway 172.27.0.1
+        address 10.100.100.106/24
+        gateway 10.100.100.254
         vlan-raw-device eth0
