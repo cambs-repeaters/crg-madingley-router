@@ -43,6 +43,8 @@ namespace Crg.PsuManager
                     throw; // This will cause the service to bail out, but Systemd will restart it cleanly...
                 }
             }, null, 0, 10 * 1000);
+
+            Console.ReadLine();
         }
     }
 }
