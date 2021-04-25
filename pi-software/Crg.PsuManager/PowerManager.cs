@@ -1,4 +1,6 @@
-﻿using System.Device.Gpio;
+﻿using System;
+using System.Device.Gpio;
+using System.Threading;
 
 namespace Crg.PsuManager
 {
@@ -13,6 +15,10 @@ namespace Crg.PsuManager
         private const int PGOOD_POE = 21;
 
         private const int PGOOD_5V = 25;
+
+        private const int POWER_RESET_ATTEMPTS = 3;
+        private int switchPowerResetAttempts = 0;
+        private int poePowerResetAttempts = 0;
 
         private readonly GpioController gpio;
 
@@ -50,6 +56,42 @@ namespace Crg.PsuManager
                 return (gpio.Read(PGOOD_5V) == PinValue.High) 
                     && (gpio.Read(PGOOD_SWITCH) == PinValue.High) 
                     && (gpio.Read(PGOOD_POE) == PinValue.High);
+            }
+        }
+
+        public void EnsurePower()
+        {
+            if (!SwitchPower)
+            {
+                Console.Error.WriteLine("Switch power not good");
+                SwitchPower = false;
+                if (switchPowerResetAttempts < POWER_RESET_ATTEMPTS)
+                {
+                    switchPowerResetAttempts++;
+                    Console.WriteLine("Resetting switch power in 5s - attempt {0}", switchPowerResetAttempts);
+                    Thread.Sleep(5000);
+                    SwitchPower = true;
+                }
+                else
+                {
+                    Console.WriteLine("Switch power reset attempts exceeded threshold - not resetting");
+                }
+            }
+            if (!PoePower)
+            {
+                Console.Error.WriteLine("PoE power not good");
+                PoePower = false;
+                if (poePowerResetAttempts < POWER_RESET_ATTEMPTS)
+                {
+                    poePowerResetAttempts++;
+                    Console.WriteLine("Resetting PoE power in 5s - attempt {0}", poePowerResetAttempts);
+                    Thread.Sleep(5000);
+                    PoePower = true;
+                }
+                else
+                {
+                    Console.WriteLine("PoE power reset attempts exceeded threshold - not resetting");
+                }
             }
         }
     }
