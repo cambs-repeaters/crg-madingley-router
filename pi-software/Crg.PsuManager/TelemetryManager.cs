@@ -45,10 +45,10 @@ namespace Crg.PsuManager
             {
                 utcTime = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
                 powerGood = PowerManager.PowerGood,
-                batteryVoltage = AdcManager.BatteryVoltage,
-                supplyVoltage = AdcManager.MainSupplyVoltage,
-                poeVoltage = AdcManager.PoeVoltage,
-                piVoltage = AdcManager.PiVoltage,
+                batteryVoltage = Math.Round(AdcManager.BatteryVoltage, 2),
+                supplyVoltage = Math.Round(AdcManager.MainSupplyVoltage, 2),
+                poeVoltage = Math.Round(AdcManager.PoeVoltage, 2),
+                piVoltage = Math.Round(AdcManager.PiVoltage, 2),
                 onBoardTemperature = TemperatureManager.OnBoardTemperature,
             };
             PublishMessage("telemetry", t);
